@@ -26,26 +26,31 @@ class Bogie {
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        // Step 1: Create and populate bogie list (reuse from UC7)
+        // Step 1: Create and populate bogie list
         List<Bogie> bogieList = new ArrayList<>();
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 56));
         bogieList.add(new Bogie("First Class", 24));
-        bogieList.add(new Bogie("Super Sleeper", 80)); // extra example
+        bogieList.add(new Bogie("Sleeper", 80));       // duplicate type
+        bogieList.add(new Bogie("AC Chair", 60));      // duplicate type
 
-        // Step 2: Apply Stream filtering (capacity > 60)
-        List<Bogie> filteredBogies = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
+        // Step 2: Group bogies by type (name)
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
 
-        // Step 3: Display filtered bogies
-        System.out.println("Bogies with capacity greater than 60:");
-        for (Bogie b : filteredBogies) {
-            b.display();
+        // Step 3: Display grouped bogies
+        System.out.println("Grouped Bogies by Type:\n");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("Type: " + entry.getKey());
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  Capacity: " + b.getCapacity());
+            }
+            System.out.println();
         }
 
         // Step 4: Verify original list remains unchanged
-        System.out.println("\nOriginal bogie list:");
+        System.out.println("Original Bogie List:");
         for (Bogie b : bogieList) {
             b.display();
         }
