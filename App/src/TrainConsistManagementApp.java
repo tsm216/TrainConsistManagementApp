@@ -1,49 +1,53 @@
 import java.util.*;
 
-class Bogie {
-    private String name;
-    private int capacity;
+class GoodsBogie {
+    private String type;
+    private String cargo;
 
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getCargo() {
+        return cargo;
     }
 
     public void display() {
-        System.out.println(name + " - Capacity: " + capacity);
+        System.out.println(type + " Bogie carrying " + cargo);
     }
 }
 
 public class TrainConsistManagementApp {
     public static void main(String[] args) {
 
-        // Step 1: Create and populate bogie list
-        List<Bogie> bogieList = new ArrayList<>();
-        bogieList.add(new Bogie("Sleeper", 72));
-        bogieList.add(new Bogie("AC Chair", 56));
-        bogieList.add(new Bogie("First Class", 24));
-        bogieList.add(new Bogie("Sleeper", 80));
+        // Step 1: Create goods bogie list
+        List<GoodsBogie> goodsList = new ArrayList<>();
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsList.add(new GoodsBogie("Open", "Coal"));
+        goodsList.add(new GoodsBogie("Box", "Grain"));
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
 
-        // Step 2: Use Stream to calculate total seating capacity
-        int totalCapacity = bogieList.stream()
-                .map(b -> b.getCapacity())   // Extract capacity
-                .reduce(0, Integer::sum);    // Aggregate (sum)
+        // Step 2: Apply safety validation using allMatch()
+        boolean isSafe = goodsList.stream()
+                .allMatch(b ->
+                        !b.getType().equalsIgnoreCase("Cylindrical") ||
+                                b.getCargo().equalsIgnoreCase("Petroleum")
+                );
 
         // Step 3: Display result
-        System.out.println("Total Seating Capacity of Train: " + totalCapacity);
-
-        // Step 4: Verify original list remains unchanged
-        System.out.println("\nOriginal Bogie List:");
-        for (Bogie b : bogieList) {
-            b.display();
+        if (isSafe) {
+            System.out.println("Train is SAFETY COMPLIANT ");
+        } else {
+            System.out.println("Train is NOT SAFE ");
         }
+
+        // Step 4: Display bogie details
+        System.out.println("\nGoods Bogie Details:");
+        goodsList.forEach(GoodsBogie::display);
     }
 }
