@@ -1,31 +1,34 @@
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class TrainConsistManagementApp {
+
+    public static boolean searchBogie(String[] bogieIDs, String searchKey) {
+        for (String id : bogieIDs) {
+            if (id.equals(searchKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        // UC17 Requirement: Use an array of String bogie names
-        String[] bogieNames = {
-                "Sleeper",
-                "AC Chair",
-                "First Class",
-                "General",
-                "Luxury"
-        };
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("======================================");
-        System.out.println("UC17 - Sort Bogie Names Using Arrays.sort()");
-        System.out.println("======================================\n");
+        String[] bogieIDs = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        // Display original list using Arrays.toString()
-        System.out.println("Original Bogie Names:");
-        System.out.println(Arrays.toString(bogieNames));
+        System.out.println("--- Train Consist Management: Linear Search ---");
+        System.out.print("Enter Bogie ID to search: ");
 
-        // UC17 Requirement: Perform alphabetical sorting using the built-in library
-        Arrays.sort(bogieNames);
+        String searchKey = scanner.next();
 
-        // Display sorted list
-        System.out.println("\nSorted Bogie Names (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        boolean isFound = searchBogie(bogieIDs, searchKey);
 
-        System.out.println("\nUC17 sorting completed...");
+        if (isFound) {
+            System.out.println("Result: Bogie " + searchKey + " found in the consist.");
+        } else {
+            System.out.println("Result: Bogie " + searchKey + " not found.");
+        }
+
+        scanner.close();
     }
 }
