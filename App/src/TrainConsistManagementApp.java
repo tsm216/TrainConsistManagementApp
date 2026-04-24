@@ -1,24 +1,45 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class UseCase19TrainConsistMgmnt {
+// Custom Exception for UC20
+class EmptyTrainException extends Exception {
+    public EmptyTrainException(String message) {
+        super(message);
+    }
+}
+
+public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("================================================");
-        System.out.println(" UC19 - Binary Search for Bogie ID ");
+        System.out.println(" UC20 - Exception Handling in Search ");
         System.out.println("================================================\n");
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
-        Arrays.sort(bogieIds);
+        // Real-world scenario: An empty array representing a train with no bogies added
+        String[] bogieIds = {};
 
-        System.out.println("Sorted Bogie IDs:");
-        for (String id : bogieIds) {
-            System.out.print(id + " ");
+        try {
+            // Goal: Prevent search operations on an empty train
+            performSearch(bogieIds, scanner);
+        } catch (EmptyTrainException e) {
+            // Catching the fail-fast exception to prevent misleading output or waste computation
+            System.err.println("Error: " + e.getMessage());
+            System.out.println("Please add bogies to the train before searching.");
+        } finally {
+            scanner.close();
+            System.out.println("\nApplication Terminated.");
         }
-        System.out.println("\n");
+    }
 
+    public static void performSearch(String[] bogieIds, Scanner scanner) throws EmptyTrainException {
+        // Defensive check: Throwing an exception early (Fail-Fast)
+        if (bogieIds == null || bogieIds.length == 0) {
+            throw new EmptyTrainException("Cannot perform search: The train consist is empty.");
+        }
+
+        Arrays.sort(bogieIds);
         System.out.print("Enter Bogie ID to search: ");
         String key = scanner.next();
 
@@ -43,9 +64,7 @@ public class UseCase19TrainConsistMgmnt {
         if (resultIndex != -1) {
             System.out.println("\nResult: Bogie " + key + " found at index " + resultIndex + ".");
         } else {
-            System.out.println("\nResult: Bogie " + key + " not found in the consist.");
+            System.out.println("\nResult: Bogie " + key + " not found.");
         }
-
-        scanner.close();
     }
 }
